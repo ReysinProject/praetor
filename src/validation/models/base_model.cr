@@ -129,10 +129,21 @@ module Validation::Models
       fields.each do |field_name, field_def|
         begin
           value = data[field_name]?
-          validated_value = field_def.validate(value, field_name)
-          
-          # Set the instance variable dynamically
-          set_instance_variable(field_name, validated_value)
+          validated_value = case field_def
+            when Validation::Fields::StringField
+              field_def.validate(value.is_a?(String) || value.nil? ? value.as?(String) : nil, field_name)
+            when Validation::Fields::Field(Int32)
+              field_def.validate(value.is_a?(Int32) || value.nil? ? value.as?(Int32) : nil, field_name)
+            when Validation::Fields::Field(Float64)
+              field_def.validate(value.is_a?(Float64) || value.nil? ? value.as?(Float64) : nil, field_name)
+            when Validation::Fields::Field(Bool)
+              field_def.validate(value.is_a?(Bool) || value.nil? ? value.as?(Bool) : nil, field_name)
+            else
+              raise ArgumentError.new("Unsupported field type for #{field_name}")
+            end
+
+          # Ensure validated_value is a ValueType before assignment
+          set_instance_variable(field_name, validated_value.as(ValueType))
         rescue ex : ValidationError
           errors << ex
         end
