@@ -1,4 +1,4 @@
-require "./validation"
+require "./validation/validation.cr"
 
 module Praetor
 
