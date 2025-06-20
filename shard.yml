@@ -1,0 +1,15 @@
+name: praetor
+version: 0.1.0
+
+authors:
+  - your-name-here <your-email-here>
+
+crystal: '>= 1.15.1'
+
+license: MIT
+
+targets:
+  praetor:
+    main: src/praetor.cr
+
+repository: https://github.com/ReysinProject/praetor
