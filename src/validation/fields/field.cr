@@ -28,7 +28,7 @@ module Validation::Fields
       new(default, required, validators, description)
     end
 
-    private def self.create_validators_from_options(**options) : Array(Validator(T))
+    protected def self.create_validators_from_options(**options) : Array(Validator(T))
       validators = [] of Validator(T)
       
       # Numeric validators (works for Int32, Float64, etc.)

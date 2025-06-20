@@ -66,7 +66,7 @@ module Validation::Models
       
       # Create setter with validation
       def {{name.id}}=(value : {{type}}?)
-        field_def = @@fields[{{name.stringify}}]
+        field_def = @@fields[{{name.stringify}}].as(Validation::Fields::Field({{type}}))
         validated_value = field_def.validate(value, {{name.stringify}})
         @{{name.id}} = validated_value
       end
@@ -79,6 +79,7 @@ module Validation::Models
         end
         value
       end
+      
     end
 
     # Macro for string fields with additional options
