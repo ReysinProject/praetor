@@ -107,6 +107,30 @@ module Validation::Models
       end
     end
 
+    macro email_field(name, **options)
+      @@fields[{{name.stringify}}] = Validation::Fields::EmailField.new(**{{options}})
+      
+      @{{name.id}} : String?
+      
+      def {{name.id}} : String?
+        @{{name.id}}
+      end
+      
+      def {{name.id}}=(value : String?)
+        field_def = @@fields[{{name.stringify}}].as(Validation::Fields::EmailField)
+        validated_value = field_def.validate(value, {{name.stringify}})
+        @{{name.id}} = validated_value
+      end
+
+      def {{name.id}}! : String
+        value = @{{name.id}}
+        if value.nil?
+          raise ValidationError.new({{name.stringify}}, "nil", "field is nil")
+        end
+        value
+      end
+    end
+
     # Initialize from hash
     def initialize(data : Hash(String, ValueType) = {} of String => ValueType)
       validate_and_assign(data)

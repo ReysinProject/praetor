@@ -17,5 +17,19 @@ module Validation::Fields
         email: !strict # fallback to basic if strict is false
       )
     end
+
+    def self.new(
+      default : String? = nil,
+      required : Bool = true,
+      strict : Bool = false,
+      description : String? = nil
+    ) : EmailField
+      EmailField.new(
+        default: default,
+        required: required,
+        strict: strict,
+        description: description
+      )
+    end
   end
 end
