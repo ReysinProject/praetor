@@ -1,3 +1,10 @@
+
+require "./validation/errors"
+require "./validation/validator"
+require "./validation/validators/*"
+require "./validation/fields/*"
+require "./validation/models/*"
+
 module Praetor
 
   VERSION = "0.1.0"
