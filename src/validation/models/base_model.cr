@@ -10,7 +10,7 @@ module Validation::Models
   abstract class BaseModel
     # Type alias for supported field types
     alias FieldType = Validation::Fields::Field(String) | Validation::Fields::Field(Int32) | Validation::Fields::Field(Float64) | Validation::Fields::Field(Bool) | Validation::Fields::StringField
-    
+
     # Type alias for supported value types
     alias ValueType = String | Int32 | Float64 | Bool | Nil
 
@@ -148,23 +148,23 @@ module Validation::Models
     # Validate and assign values from hash
     private def validate_and_assign(data : Hash(String, ValueType)) : Nil
       errors = [] of ValidationError
-      
+
       # Validate each field
       fields.each do |field_name, field_def|
         begin
           value = data[field_name]?
           validated_value = case field_def
-            when Validation::Fields::StringField
-              field_def.validate(value.is_a?(String) || value.nil? ? value.as?(String) : nil, field_name)
-            when Validation::Fields::Field(Int32)
-              field_def.validate(value.is_a?(Int32) || value.nil? ? value.as?(Int32) : nil, field_name)
-            when Validation::Fields::Field(Float64)
-              field_def.validate(value.is_a?(Float64) || value.nil? ? value.as?(Float64) : nil, field_name)
-            when Validation::Fields::Field(Bool)
-              field_def.validate(value.is_a?(Bool) || value.nil? ? value.as?(Bool) : nil, field_name)
-            else
-              raise ArgumentError.new("Unsupported field type for #{field_name}")
-            end
+                            when Validation::Fields::StringField
+                              field_def.validate(value.is_a?(String) || value.nil? ? value.as?(String) : nil, field_name)
+                            when Validation::Fields::Field(Int32)
+                              field_def.validate(value.is_a?(Int32) || value.nil? ? value.as?(Int32) : nil, field_name)
+                            when Validation::Fields::Field(Float64)
+                              field_def.validate(value.is_a?(Float64) || value.nil? ? value.as?(Float64) : nil, field_name)
+                            when Validation::Fields::Field(Bool)
+                              field_def.validate(value.is_a?(Bool) || value.nil? ? value.as?(Bool) : nil, field_name)
+                            else
+                              raise ArgumentError.new("Unsupported field type for #{field_name}")
+                            end
 
           # Ensure validated_value is a ValueType before assignment
           set_instance_variable(field_name, validated_value.as(ValueType))
@@ -172,14 +172,14 @@ module Validation::Models
           errors << ex
         end
       end
-      
+
       # Check for unknown fields
       data.each do |key, value|
         unless fields.has_key?(key)
           errors << ValidationError.new(key, value.to_s, "unknown field")
         end
       end
-      
+
       # Raise validation errors if any
       unless errors.empty?
         raise ValidationErrors.new(errors)
@@ -218,14 +218,14 @@ module Validation::Models
     # Convert to hash
     def to_h(include_nil : Bool = false) : Hash(String, ValueType)
       hash = {} of String => ValueType
-      
+
       fields.each do |field_name, _|
         value = get_instance_variable(field_name)
         if include_nil || !value.nil?
           hash[field_name] = value
         end
       end
-      
+
       hash
     end
 
@@ -262,7 +262,7 @@ module Validation::Models
     def validate! : Nil
       current_data = to_h(include_nil: true)
       errors = [] of ValidationError
-      
+
       fields.each do |field_name, field_def|
         begin
           value = current_data[field_name]?
@@ -271,7 +271,7 @@ module Validation::Models
           errors << ex
         end
       end
-      
+
       unless errors.empty?
         raise ValidationErrors.new(errors)
       end
@@ -290,7 +290,7 @@ module Validation::Models
     # Check if a specific field is valid
     def field_valid?(field_name : String) : Bool
       return false unless fields.has_key?(field_name)
-      
+
       begin
         field_def = fields[field_name]
         value = get_instance_variable(field_name)
@@ -304,7 +304,7 @@ module Validation::Models
     # Get validation error for a specific field
     def field_error(field_name : String) : ValidationError?
       return nil unless fields.has_key?(field_name)
-      
+
       begin
         field_def = fields[field_name]
         value = get_instance_variable(field_name)
@@ -318,18 +318,18 @@ module Validation::Models
     # String representation
     def to_s(io : IO) : Nil
       io << "#{self.class.name}("
-      
+
       first = true
       fields.each do |field_name, _|
         unless first
           io << ", "
         end
         first = false
-        
+
         value = get_instance_variable(field_name)
         io << "#{field_name}: #{value.inspect}"
       end
-      
+
       io << ")"
     end
 

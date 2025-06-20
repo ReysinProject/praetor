@@ -11,8 +11,8 @@ module Validation::Fields
     getter required : Bool
     getter description : String?
 
-    def initialize(@default : T? = nil, 
-                   @required : Bool = true, 
+    def initialize(@default : T? = nil,
+                   @required : Bool = true,
                    @validators : Array(Validator(T)) = [] of Validator(T),
                    @description : String? = nil)
     end
@@ -70,7 +70,7 @@ module Validation::Fields
   module ValidatorHelpers
     def self.create_validator_from_options(type : T.class, **options) : Array(Validator(T)) forall T
       validators = [] of Validator(T)
-      
+
       # This would be implemented based on the specific type
       # Subclasses will override this with type-specific logic
       validators

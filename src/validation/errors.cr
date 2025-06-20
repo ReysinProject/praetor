@@ -42,7 +42,7 @@ module Validation
 
     private def build_message : String
       return "No validation errors" if @errors.empty?
-      
+
       if @errors.size == 1
         @errors.first.validation_message
       else

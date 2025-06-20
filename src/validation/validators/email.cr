@@ -18,7 +18,7 @@ module Validation::Validators
   # More strict email validator with additional checks
   class StrictEmailValidator < Validator(String)
     EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    
+
     def initialize(@max_length : Int32 = 254)
     end
 
@@ -43,7 +43,7 @@ module Validation::Validators
 
       # Validate local part
       validate_local_part(local_part, field, value)
-      
+
       # Validate domain part
       validate_domain_part(domain_part, field, value)
 

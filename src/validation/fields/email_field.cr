@@ -7,7 +7,7 @@ module Validation::Fields
       default : String? = nil,
       required : Bool = true,
       strict : Bool = false,
-      description : String? = nil
+      description : String? = nil,
     )
       super(
         default: default,
