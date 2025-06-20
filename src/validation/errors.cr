@@ -5,14 +5,14 @@ module Validation
   class ValidationError < Exception
     getter field : String
     getter value : String
-    getter message : String
+    getter validation_message : String
 
-    def initialize(@field : String, @value : String, @message : String)
-      super("#{@field}: #{@message} (got: #{@value})")
+    def initialize(@field : String, @value : String, @validation_message : String)
+      super("#{@field}: #{@validation_message} (got: #{@value})")
     end
 
     def to_s(io : IO) : Nil
-      io << "#{@field}: #{@message} (got: #{@value})"
+      io << "#{@field}: #{@validation_message} (got: #{@value})"
     end
   end
 
@@ -44,9 +44,9 @@ module Validation
       return "No validation errors" if @errors.empty?
       
       if @errors.size == 1
-        @errors.first.message
+        @errors.first.validation_message
       else
-        "#{@errors.size} validation errors: #{@errors.map(&.message).join(", ")}"
+        "#{@errors.size} validation errors: #{@errors.map(&.validation_message).join(", ")}"
       end
     end
   end

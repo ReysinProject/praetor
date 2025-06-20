@@ -1,4 +1,4 @@
-r# Email validation functionality
+# Email validation functionality
 
 require "./string"
 
