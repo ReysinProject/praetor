@@ -1,9 +1,4 @@
 
-require "./validation/errors"
-require "./validation/validator"
-require "./validation/validators/*"
-require "./validation/fields/*"
-require "./validation/models/*"
 
 module Praetor
 
@@ -15,5 +10,12 @@ module Praetor
   
   def self.version_info : String
     "Validation v#{VERSION} (built #{BUILD_DATE}, commit #{BUILD_COMMIT})"
+  end
+end
+
+module Praetor::Test
+  # hello world test
+  def self.hello_world : String
+    "Hello, world! This is Praetor v#{Praetor::VERSION}."
   end
 end
