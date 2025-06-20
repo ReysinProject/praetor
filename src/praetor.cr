@@ -1,4 +1,4 @@
-
+require "./validation"
 
 module Praetor
 
