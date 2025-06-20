@@ -9,7 +9,7 @@ module Validation::Models
   # Base class for validated models
   abstract class BaseModel
     # Type alias for supported field types
-    alias FieldType = Fields::Field(String) | Fields::Field(Int32) | Fields::Field(Float64) | Fields::Field(Bool) | Fields::StringField
+    alias FieldType = Validation::Fields::Field(String) | Validation::Fields::Field(Int32) | Validation::Fields::Field(Float64) | Validation::Fields::Field(Bool) | Validation::Fields::StringField
     
     # Type alias for supported value types
     alias ValueType = String | Int32 | Float64 | Bool | Nil
@@ -51,9 +51,9 @@ module Validation::Models
     macro field(name, type, **options)
       # Register the field
       {% if type == String %}
-        @@fields[{{name.stringify}}] = Fields::StringField.new(**{{options}})
+        @@fields[{{name.stringify}}] = Validation::Fields::StringField.new(**{{options}})
       {% else %}
-        @@fields[{{name.stringify}}] = Fields::Field({{type}}).new(**{{options}})
+        @@fields[{{name.stringify}}] = Validation::Fields::Field({{type}}).new(**{{options}})
       {% end %}
       
       # Create instance variable
@@ -83,7 +83,7 @@ module Validation::Models
 
     # Macro for string fields with additional options
     macro string_field(name, **options)
-      @@fields[{{name.stringify}}] = Fields::StringField.new(**{{options}})
+      @@fields[{{name.stringify}}] = Validation::Fields::StringField.new(**{{options}})
       
       @{{name.id}} : String?
       
@@ -92,7 +92,7 @@ module Validation::Models
       end
       
       def {{name.id}}=(value : String?)
-        field_def = @@fields[{{name.stringify}}].as(Fields::StringField)
+        field_def = @@fields[{{name.stringify}}].as(Validation::Fields::StringField)
         validated_value = field_def.validate(value, {{name.stringify}})
         @{{name.id}} = validated_value
       end
